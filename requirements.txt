@@ -1,14 +1,7 @@
 streamlit
 pandas
-pathlib
 streamlit-elements
 geopandas
 plotly.express
-abc
-uuid
-contextlib
-matplotlib
 seaborn
-jsonschema
-shapely
 numpy
