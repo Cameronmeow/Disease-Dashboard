@@ -198,5 +198,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 For queries or contributions, contact:
 - **Email**: [22b2463@iitb.ac.in]
 - **GitHub**: [https://github.com/Cameronmeow/NDMC]
-# Disease-Dashboard
-# Disease-Dashboard
