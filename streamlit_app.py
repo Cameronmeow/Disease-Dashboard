@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 from io import BytesIO
 from pathlib import Path
-from streamlit_elements import elements
 from matplotlib.colors import to_rgb
 import seaborn as sns
 import matplotlib.pyplot as plt
