@@ -4,20 +4,21 @@ import plotly.express as px
 import streamlit as st
 from io import BytesIO
 import zipfile
-import os
 
 
 class MapMatrix:
     def __init__(self):
         pass
 
-    def create_map(self, csv_path, geojson_path, year, disease,state_name, color_scale):
+    def create_map(self, csv_path, shapefile_path, year, disease, state_name, color_scale):
         # Load data
         data = pd.read_csv(csv_path)
         data["States/UTs"] = data["States/UTs"].str.strip()
         data["Short Form"] = data["Short Form"].str.strip()
-        gdf = gpd.read_file(geojson_path)
-        gdf["NAME_1"] = gdf["NAME_1"].str.strip()
+
+        # Load shapefile
+        gdf = gpd.read_file(shapefile_path)
+        gdf["ST_NM"] = gdf["ST_NM"].str.strip()  # Ensure state names match
 
         # Melt and preprocess data
         data_melted = data.melt(
@@ -28,7 +29,7 @@ class MapMatrix:
 
         # Merge and filter data
         merged = gdf.merge(
-            data_melted, left_on="NAME_1", right_on="States/UTs", how="left"
+            data_melted, left_on="ST_NM", right_on="States/UTs", how="left"
         )
         filtered_data = merged[(merged["Year"] == str(year)) & (merged["Disease"] == disease)]
 
@@ -49,13 +50,13 @@ class MapMatrix:
             locations=filtered_data.index,
             color="Cases",
             color_continuous_scale=color_scale,
-            hover_name="NAME_1",
+            hover_name="ST_NM",
             labels={"Cases": "Number of Cases"},
             title=f"{disease} Cases in {year} - Total Cases: {total_cases:,}"
         )
 
         # Add text labels to each state
-        for i, row in filtered_data.iterrows():
+        for _, row in filtered_data.iterrows():
             if pd.notna(row["Cases"]):
                 fig.add_scattergeo(
                     lon=[row.geometry.centroid.x],
@@ -63,7 +64,7 @@ class MapMatrix:
                     text=row["text"],
                     mode="text",
                     showlegend=False,
-                    textfont=dict(family="Droid Sans, sans-serif", size=12, color="black"),
+                    textfont=dict(family="Arial, sans-serif", size=12, color="black"),
                 )
 
         # Update map properties
@@ -78,17 +79,16 @@ class MapMatrix:
             },
             annotations=[
                 dict(
-                    text=f"National Average<br> <b>{national_average:.2f} cases",
-                    x=0.8,  # Centered horizontally
-                    y=0.2,  # Position just below the title
+                    text=f"National Average<br> <b>{national_average:.2f} cases</b>",
+                    x=0.8,
+                    y=0.2,
                     xref="paper",
                     yref="paper",
                     showarrow=False,
-                    font=dict(size=25, color="black", family="Arial, sans-serif")
+                    font=dict(size=16, color="black", family="Arial, sans-serif"),
                 ),
-                
             ],
-            title_font=dict(size=22, family="Arial, sans-serif", color="black"),
+            title_font=dict(size=20, family="Arial, sans-serif", color="black"),
             margin=dict(l=0, r=0, t=0, b=0),
             width=600,
             height=400,
@@ -96,13 +96,13 @@ class MapMatrix:
 
         return fig
 
-    def render_maps_grid(self, csv_path, geojson_path, start_year, end_year, disease, color_scale):
+    def render_maps_grid(self, csv_path, shapefile_path, start_year, end_year, disease, state_name, color_scale):
         years = list(range(start_year, end_year + 1))
         fig_list = []
         col1, col2 = st.columns(2)
 
         for idx, year in enumerate(years):
-            fig = self.create_map(csv_path, geojson_path, year, disease, color_scale)
+            fig = self.create_map(csv_path, shapefile_path, year, disease, state_name, color_scale)
             fig_list.append(fig)
 
             # Display in a 2x2 grid
@@ -115,19 +115,4 @@ class MapMatrix:
 
         return fig_list
 
-    def download_maps(self, fig_list, file_name="maps.zip"):
-        # Save all maps as images and compress them into a zip file
-        with BytesIO() as buffer:
-            with zipfile.ZipFile(buffer, "w") as zf:
-                for idx, fig in enumerate(fig_list):
-                    img_buffer = BytesIO()
-                    fig.write_image(img_buffer, format="png")
-                    img_buffer.seek(0)
-                    zf.writestr(f"map_{idx + 1}.png", img_buffer.read())
-            buffer.seek(0)
-            st.download_button(
-                label="Download All Maps as ZIP",
-                data=buffer,
-                file_name=file_name,
-                mime="application/zip",
-            )
+    

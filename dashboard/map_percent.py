@@ -8,13 +8,13 @@ class DiseasePercentMap:
     def __init__(self):
         pass
 
-    def __call__(self, csv_path, geojson_path, year, disease, state_name,color_scale):
+    def __call__(self, csv_path, shapefile_path, year, disease, state_name,color_scale):
         # Load data
         data = pd.read_csv(csv_path)
         data["States/UTs"] = data["States/UTs"].str.strip()
         data["Short Form"] = data["Short Form"].str.strip()
-        gdf = gpd.read_file(geojson_path)
-        gdf["NAME_1"] = gdf["NAME_1"].str.strip()
+        gdf = gpd.read_file(shapefile_path)
+        gdf["ST_NM"] = gdf["ST_NM"].str.strip()
 
         # Melt and preprocess data
         data_melted = data.melt(
@@ -25,7 +25,7 @@ class DiseasePercentMap:
 
         # Merge and filter data
         merged = gdf.merge(
-            data_melted, left_on="NAME_1", right_on="States/UTs", how="left"
+            data_melted, left_on="ST_NM", right_on="States/UTs", how="left"
         )
         filtered_data = merged[(merged["Year"] == year) & (merged["Disease"] == disease)]
 
@@ -58,7 +58,7 @@ class DiseasePercentMap:
             locations=filtered_data.index,
             color="Cases",
             color_continuous_scale=color_scale,
-            hover_name="NAME_1",
+            hover_name="ST_NM",
             labels={"Cases": "Number of Cases"},
             title=f"{disease} Cases in {year} - Total Cases: {total_cases:,}"
         )

@@ -1,8 +1,8 @@
 # .streamlit/config.toml
 
 [theme]
-primaryColor = "#FFCFCF"               # Color for buttons and highlights
-backgroundColor = "#FFFDEC"           # Background of the main app
-secondaryBackgroundColor = "#86A788" # Background of the sidebar
-textColor = "black"                 # Text color throughout the app
+primaryColor = "#79D7BE"               # Color for buttons and highlights
+backgroundColor = "#F6F4F0"           # Background of the main app
+secondaryBackgroundColor = "#C9E6F0" # Background of the sidebar
+textColor = "#4DA1A9"                 # Text color throughout the app
 font = "sans serif"                   # Font family (options: "serif", "sans serif", "monospace")

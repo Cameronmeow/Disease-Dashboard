@@ -65,6 +65,8 @@ Element   | Description
    pip install uuid
    pip install contextlib
    pip install -U kaleido
+   pip install streamlit-option-menu
+
    ```
 
 4. **Add the `DiseaseData.csv` and `india_telengana.geojson` Files**
