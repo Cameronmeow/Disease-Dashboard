@@ -74,7 +74,7 @@ class DiseaseMap:
         fig.update_layout(
             title={
                 "text": f"{disease} Cases in {year} - Total Cases: {total_cases:,}",
-                "y": 0.95,
+                "y": 0.93,
                 "x": 0.5,
                 "xanchor": "center",
                 "yanchor": "top",
@@ -88,7 +88,7 @@ class DiseaseMap:
                 dict(
                     text=f"National Average<br><b>{national_average:.2f}</b> cases",
                     x=0.8,
-                    y=0.2,
+                    y=0.15,
                     xref="paper",
                     yref="paper",
                     showarrow=False,

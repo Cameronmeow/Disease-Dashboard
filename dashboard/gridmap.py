@@ -68,7 +68,7 @@ class GridMap:
         fig.update_layout(
             title={
                 "text": f"{disease} Cases in {year} - Total Cases: {total_cases:,}",
-                "y": 0.95,
+                "y": 0.93,
                 "x": 0.5,
                 "xanchor": "center",
                 "yanchor": "top",

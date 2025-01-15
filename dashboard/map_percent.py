@@ -88,7 +88,7 @@ class DiseasePercentMap:
         fig.update_layout(
             title={
                 "text": f"{disease} Cases in {year} - Total Cases: {total_cases:,}",
-                "y": 0.95,  # Position closer to the top
+                "y": 0.93,  # Position closer to the top
                 "x": 0.5,   # Centered horizontally
                 "xanchor": "center",
                 "yanchor": "top",
