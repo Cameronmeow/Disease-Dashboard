@@ -1,5 +1,5 @@
-##NDMC
-# Disease Dashboard
+# NDMC Disease Dashboard 
+[text](https://diseasedashboard-ndmc.streamlit.app/)
 
 This project is an interactive disease visualization dashboard built with **Streamlit**. The dashboard is designed to analyze and visualize disease-related data across Indian states using CSV and GeoJSON files.
 
