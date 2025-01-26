@@ -3,6 +3,34 @@
 
 This project is an interactive disease visualization dashboard built with **Streamlit**. The dashboard is designed to analyze and visualize disease-related data across Indian states using CSV and GeoJSON files.
 
+# What is remaining
+
+1. ### Rendering Speed of the Map
+##### Problem: 
+The map's rendering is slow because it uses a large shapefile. Streamlit re-renders the entire page whenever any widget is modified, which limits optimization possibilities.
+##### Proposed Solution: 
+While rendering text separately from the map could improve performance, Streamlit's inherent behavior prevents this. Using HTML widgets was considered but not implemented due to difficulties in adding functionality and customization
+##### Next Steps:
+Consider using Plotly or folium with custom rendering. Optimize the GeoJSON file by simplifying polygons using tools like QGIS or geojson-simplify. Research partial re-rendering solutions or hybrid frameworks for faster updates.
+
+2. ### CSV Upload Error
+##### Problem: 
+After uploading the CSV file, an error may appear:
+```
+An error occurred: No columns to parse from file
+```
+##### Solution: 
+This issue can be resolved by re-uploading the CSV file. It should work fine on the second attempt.
+Note for Users: This is a minor inconvenience; ensure that the CSV file is correctly formatted and contains all necessary data before uploading.
+
+3. ### Map Appearance on Smaller Screens
+##### Problem:
+On smaller desktops, state names and values may overlap or extend into other states, making the map appear cluttered.
+##### Workaround: 
+Reducing magnification using Ctrl + - improves map readability.
+##### Limitations: 
+This issue is due to screen size and cannot be fixed solely with code. Users are encouraged to view the map on larger screens or adjust zoom levels manually.
+
 ---
 
 ## Features
@@ -152,6 +180,12 @@ Telangana,TS,80,90
 - **`streamlit_app.py`**: Contains the `DiseaseMap`, `DiseasePercentMap`, and `GridMap` classes for rendering maps.
 
 ---
+## Hosting Instructions 
+
+1. Streamlit Community Cloud
+2. Deploying on Heroku
+3. Deploying with Docker
+
 
 ## Development
 

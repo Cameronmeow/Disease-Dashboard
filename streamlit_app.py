@@ -124,7 +124,7 @@ def main():
             "Compare Years one by one",
             "Compare Years in a grid"
         ],
-        # icons=["house", "bar-chart", "percent", "calendar3", "grid"],
+        icons=["house", "bar-chart", "percent", "calendar3", "grid"],
         menu_icon="cast",
         default_index=0,
         orientation="horizontal"
@@ -137,31 +137,11 @@ def main():
         try:
             diseasedata = load_disease_data(csv_file)
 
-            year = st.sidebar.slider(
-                "Select a year:",
-                min_value=int(diseasedata["Year"].min()),
-                max_value=int(diseasedata["Year"].max()),
-                value=int(diseasedata["Year"].min())
-            )
-
+            
             state_name = st.sidebar.selectbox(
                 "Select State Name Type", ['States/UTs', 'Short Form']
             )
-
-            start_year = st.sidebar.number_input(
-                "Start Year",
-                min_value=int(diseasedata["Year"].min()),
-                value=int(diseasedata["Year"].min())
-            )
-            end_year = st.sidebar.number_input(
-                "End Year",
-                min_value=start_year,
-                value=start_year + 3
-            )
-
-            if start_year > end_year:
-                st.sidebar.error("Start Year cannot be greater than End Year.")
-
+ 
             disease = st.sidebar.selectbox(
                 "Select Disease", diseasedata["Disease"].unique()
             )
@@ -169,12 +149,50 @@ def main():
             color_scale = preset_color_picker()
 
             if selected_page == "Single Graph with Numbers":
+                year = st.sidebar.slider(
+                    "Select a year:",
+                    min_value=int(diseasedata["Year"].min()),
+                    max_value=int(diseasedata["Year"].max()),
+                    value=int(diseasedata["Year"].min())
+                )
                 main_page(color_scale, str(year), disease, state_name, csv_file)
             elif selected_page == "Single Graph with Percentage":
+                year = st.sidebar.slider(
+                    "Select a year:",
+                    min_value=int(diseasedata["Year"].min()),
+                    max_value=int(diseasedata["Year"].max()),
+                    value=int(diseasedata["Year"].min())
+                )
                 percent_page(csv_file, color_scale, str(year), disease, state_name)
             elif selected_page == "Compare Years one by one":
+                start_year = st.sidebar.number_input(
+                    "Start Year",
+                    min_value=int(diseasedata["Year"].min()),
+                    value=int(diseasedata["Year"].min())
+                )
+                end_year = st.sidebar.number_input(
+                    "End Year",
+                    min_value=start_year,
+                    value=start_year + 3
+                )
+                if start_year > end_year:
+                    st.sidebar.error("Start Year cannot be greater than End Year.")
+
                 compare_years_page(start_year, end_year, disease, state_name, color_scale)
             elif selected_page == "Compare Years in a grid":
+                start_year = st.sidebar.number_input(
+                    "Start Year",
+                    min_value=int(diseasedata["Year"].min()),
+                    value=int(diseasedata["Year"].min())
+                )
+                end_year = st.sidebar.number_input(
+                    "End Year",
+                    min_value=start_year,
+                    value=start_year + 3
+                )
+                if start_year > end_year:
+                    st.sidebar.error("Start Year cannot be greater than End Year.")
+
                 map_matrix_page(start_year, end_year, disease, state_name, color_scale)
 
         except Exception as e:
